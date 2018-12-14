@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!--
+		标准Maven项目的标识组成：groupId:artifactId:version
+		.e.g org.springframework:spring-webmvc:4.3.16.RELEASE
+	 -->
+
+	<!-- POM模型版本 -->
+	<modelVersion>4.0.0</modelVersion>
+	<!-- 项目的唯一标识符 -->
+	<groupId>com.dlmu.dds</groupId>
+	<!-- 项目的名称 -->
+	<artifactId>dds</artifactId>
+	<!-- 项目的版本号 -->
+	<version>${revision}</version>
+	<!-- 项目的打包类型 -->
+	<packaging>war</packaging>
+	<!-- 项目名称 -->
+	<name>dds</name>
+	<!-- 项目描述 -->
+	<description>Car-Rent online system</description>
+
+	<!-- 属性值设定，可在整个POM文件中作为定数使用
+		调用格式：${property_name}
+	 -->
+	<properties>
+		<!-- 固定属性设置 -->
+		<!-- 指定JDK版本 -->
+		<java.version>1.8</java.version>
+		<!-- 文件拷贝时的编码 替代maven-resources-plugin的encoding配置 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- 编译时的编码 替代maven-compiler-plugin的encoding配置 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
+		<!-- 自定义属性设置 -->
+		<revision>dev-SNAPSHOT</revision>
+		<spring.version>4.3.17.RELEASE</spring.version>
+		<lombok.version>1.16.20</lombok.version>
+		<jackson.dataformat.xml.version>2.9.0</jackson.dataformat.xml.version>
+		<junit.jupiter.version>5.1.0</junit.jupiter.version>
+		<junit.platform.version>1.1.0</junit.platform.version>
+		<org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+		<jacoco.version>0.8.1</jacoco.version>
+		<tomcat.version>8.5.0</tomcat.version>
+		<cargo.version>1.6.7</cargo.version>
+		<logback.version>1.2.3</logback.version>
+		<mybatis.version>3.4.6</mybatis.version>
+		<mybatis.spring.version>1.3.2</mybatis.spring.version>
+		<sonar.coverage.exclusions>
+			**/beans/**,
+			**/common/**,
+			**/config/**,
+			**/controller/**,
+			**/enums/**,
+			**/exceptions/**,
+			**/service/**,
+		</sonar.coverage.exclusions>
+	</properties>
+
+	<!-- 项目相关的所有依赖(自动从Maven仓库中下载) -->
+	<dependencies>
+		<!-- spring framework jars -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis.spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+	
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.1-b09</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.44</version>
+		</dependency>
+
+		<!-- other third-party jars -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>${jackson.dataformat.xml.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.5</version>
+		</dependency>
+
+		<!-- logback jars 用来替代log4j或common-loggings -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.logback-extensions</groupId>
+			<artifactId>logback-ext-spring</artifactId>
+			<version>0.1.5</version>
+		</dependency>
+
+		
+		
+		
+	</dependencies>
+
+	<!-- 构建项目所需要的配置 -->
+	<build>
+		<!-- 资源文件的配置 -->
+		<resources>
+			<!-- 配置资源文件位置，include指定的文件需要执行filter来将资源文件中变量替换成具体的value -->
+			<resource>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources</directory>
+				<includes>
+					<include>**/application*.yml</include>
+					<include>**/application*.yaml</include>
+					<include>**/application*.properties</include>
+				</includes>
+			</resource>
+			<!-- 配置exclude指定的文件以外的文件不做filter -->
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<excludes>
+					<exclude>**/application*.yml</exclude>
+					<exclude>**/application*.yaml</exclude>
+					<exclude>**/application*.properties</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<!-- 构建时所使用的插件的配置 -->
+		<plugins>
+			<!-- 打包插件并配置web.xml位置 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.1</version>
+				<configuration>
+					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+				</configuration>
+			</plugin>
+		
+			<!-- 编译插件的配置，配置了所使用的JAVA版本 -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<!-- 测试插件，在执行mvn test的时候可以通过执行Junit test class来进行单体测试 -->
+			<!-- 测试执行结束后，生成测试结果报告，默认格式为xml -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+				<configuration>
+					<includes>
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+						<include>**/*TestCase.java</include>
+					</includes>
+					<properties>
+						<!-- <includeTags>fast</includeTags> -->
+						<excludeTags>slow</excludeTags>
+						<!--
+						<configurationParameters>
+							junit.jupiter.conditions.deactivate = *
+						</configurationParameters>
+						-->
+					</properties>
+				</configuration>
+
+				<!-- junit-platform-surefire-provider是JUnit5提供的用于surefile对JUnit5的支持 -->
+				<!-- 从version 2.22.0开始，Maven Surefire原生支持JUnit5，可以不用配置下面的provider -->
+				<!-- <dependencies>
+					<dependency>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-surefire-provider</artifactId>
+						<version>${junit.platform.version}</version>
+					</dependency>
+				</dependencies> -->
+			</plugin>
+				
+	
+			<!-- 内置Tomcat插件 -->
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.6.7</version>
+				<configuration>
+					<container>
+						<containerId>tomcat8x</containerId>
+						<artifactInstaller>
+							<groupId>org.apache.tomcat</groupId>
+							<artifactId>tomcat</artifactId>
+							<version>${tomcat.version}</version>
+						</artifactInstaller>
+					</container>
+					<configuration>
+						<type>standalone</type>
+						<home>
+							${project.build.directory}/apache-tomcat-${tomcat.version}
+						</home>
+						<properties>
+							<cargo.servlet.port>8080</cargo.servlet.port>
+							<cargo.logging>low</cargo.logging>
+						</properties>
+					</configuration>
+					<deployables>
+						<deployable>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+							<type>war</type>
+							<properties>
+								<context>/dds</context>
+							</properties>
+						</deployable>
+					</deployables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- 构建用多环境设定配置 -->
+	<profiles>
+		<profile>
+			<id>stg</id>
+			<build>
+				<filters>
+					<filter>config/stg/stg.properties</filter>
+				</filters>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<build>
+				<filters>
+					<filter>config/dev/dev.properties</filter>
+				</filters>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
+</project>

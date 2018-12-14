@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd ">
+	<!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:application.properties"/>
+	<!-- 数据源，使用DBCP2 -->
+	<!-- 数据源，使用DBCP2 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${carrent.datasource.driver-class-name}" />
+		<property name="url" value="${carrent.datasource.url}" />
+		<property name="username" value="${carrent.datasource.username}" />
+		<property name="password" value="${carrent.datasource.password}" />
+		<!-- 连接池的最大值 0时无限制 默认值是8 -->
+		<property name="maxTotal" value="${carrent.datasource.max-total}" />
+		<!-- 最大空闲值 0时无限制 默认值是8 -->
+		<property name="maxIdle" value="${carrent.datasource.max-idle}" />
+		<!-- 最小空闲值 默认值是0 -->
+		<property name="minIdle" value="${carrent.datasource.min-idle}" />
+	</bean>
+	<!-- sqlSessinFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="mapperLocations" value="classpath:mapper/*.xml"/>
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 注册所有的映射器 -->
+	<!-- 装配sqlSessinFactory -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.dlmu.dds.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+	<!-- 事务管理器类 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 注解方式实现事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+	<!-- <context:annotation-config/> -->
+	<!-- 不扫描包含Controller的文件 -->
+	<context:component-scan base-package="com.dlmu.dds">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+</beans>
